@@ -1,0 +1,74 @@
+<!doctype html>
+<html ng-app="testApp">
+  <head>
+    <meta charset="utf-8">
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width">
+
+    <title ng-bind="stateData.pageTitle"></title>
+
+    <!-- build:css(.) styles/vendor.css -->
+    <!-- bower:css -->
+    <!-- endbower -->
+    <!-- endbuild -->
+
+    <!-- build:css(.tmp) styles/main.css -->
+    <link rel="stylesheet" href="styles/main.css">
+    <!-- endbuild -->
+
+  </head>
+
+  <body ng-controller="MainCtrl as mainCtrl">
+    <div ui-view="header"></div>
+    <div ui-view="content"></div>
+    <div ui-view="footer"></div>
+
+    <div>
+        <a ui-sref="home">Home</a>
+        <a ui-sref="search">Search</a>
+        <a ui-sref="details">Details</a>
+        <a ui-sref="checkout">Checkout</a>
+    </div>
+
+    <br>
+    <div>
+        <a href="/">/</a>
+        <a href="/search">/search</a>
+        <a href="/details">/details</a>
+        <a href="/checkout">/checkout</a>
+    </div>
+
+    <br>
+    <div>
+        <button ng-click="mainCtrl.redirectTo('/')">window.location.href = "/"</button>
+        <button ng-click="mainCtrl.redirectTo('/search')">window.location.href = "/search"</button>
+        <button ng-click="mainCtrl.redirectTo('/details')">window.location.href = "/details"</button>
+        <button ng-click="mainCtrl.redirectTo('/checkout')">window.location.href = "/checkout"</button>
+    </div>
+
+    <br>
+    <div>
+        <button ng-click="mainCtrl.changeLocation('/')">$location.path("/")</button>
+        <button ng-click="mainCtrl.changeLocation('/search')">$location.path("/search")</button>
+        <button ng-click="mainCtrl.changeLocation('/details')">$location.path("/details")</button>
+        <button ng-click="mainCtrl.changeLocation('/checkout')">$location.path("/checkout")</button>
+    </div>
+
+    {{$$location.path()}}
+    {{$$location.search()}}
+
+    <!-- build:js(.) scripts/vendor.js -->
+    <!-- bower:js -->
+    <script src="bower_components/jquery/dist/jquery.js"></script>
+    <script src="bower_components/angular/angular.js"></script>
+    <script src="bower_components/angular-ui-router/release/angular-ui-router.js"></script>
+    <!-- endbower -->
+    <!-- endbuild -->
+
+    <!-- build:js({.tmp,app}) scripts/scripts.js -->
+    <script src="scripts/app.js"></script>
+    <script src="scripts/controllers/main.js"></script>
+    <!-- endbuild -->
+
+</body>
+</html>
