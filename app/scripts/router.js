@@ -1,0 +1,123 @@
+;(function(angular) {
+  "use strict";
+
+  angular.module("testApp").config([
+    "$stateProvider",
+    function($stateProvider) {
+      $stateProvider
+        .state("search", {
+          url: "/search",
+          views: {
+            "header": {
+              templateUrl: "views/headers/header2.html"
+            },
+            "content": {
+              templateUrl: "views/contents/search.html"
+            }
+          },
+          data: {
+            pageTitle: "Search page"
+          }
+        })
+        .state("details", {
+          url: "/details",
+          views: {
+            "content": {
+              templateUrl: "views/contents/details.html"
+            },
+            "footer": {
+              templateUrl: "views/footers/footer2.html"
+            }
+          },
+          data: {
+            pageTitle: "Details page"
+          }
+        });
+    }
+  ]);
+
+  angular.module("testApp").config([
+    "$uiViewScrollProvider",
+    function($uiViewScrollProvider) {
+      $uiViewScrollProvider.useAnchorScroll();
+    }
+  ]);
+
+  angular.module("testApp").config([
+    "$locationProvider",
+    function($locationProvider) {
+      // console.log("Forcing LocationHtml5Url location mode");
+      var origGet = $locationProvider.$get[4];
+
+      $locationProvider.$get = [
+        "$rootScope",
+        "$browser",
+        "$sniffer",
+        "$rootElement",
+        function($rootScope, $browser, $sniffer, $rootElement) {
+          var sniffer = $sniffer;
+          if (!sniffer.history) {
+            sniffer = {history: true};
+          }
+          return origGet($rootScope, $browser, sniffer, $rootElement);
+        }
+      ];
+
+      $locationProvider.html5Mode(true);
+    }
+  ]);
+
+  angular.module("testApp").constant("ROUTING_WHITELIST", {
+    SEARCH_PAGE: {
+      regex: /(^\/search)/,
+      stateName: "search"
+    },
+    DETAILS_PAGE: {
+      regex: /(^\/details)/,
+      stateName: "details"
+    }
+  });
+
+  angular.module("testApp").run([
+    "$sniffer",
+    "$window",
+    "$location",
+    "$rootScope",
+    "ROUTING_WHITELIST",
+    function($sniffer, $window, $location, $rootScope, ROUTING_WHITELIST) {
+      if (!$sniffer.history) {
+        return;
+      }
+
+      $rootScope.$on("$locationChangeStart", function(event, newUrl) {
+        var path = $location.path();
+
+        var key, stateName;
+        for (key in ROUTING_WHITELIST) {
+          var value = ROUTING_WHITELIST[key];
+          if (value.regex.test(path)) {
+            stateName = value.stateName;
+            break;
+          }
+        }
+
+        if (stateName == null) {
+          event.preventDefault();
+          $window.location.href = newUrl;
+          return;
+        }
+      });
+    }
+  ]);
+
+  angular.module("testApp").run([
+    "$log",
+    "$rootScope",
+    function($log, $rootScope) {
+      $rootScope.$on("$stateChangeSuccess", function(event, toState) {
+        $rootScope.stateData = toState.data;
+      });
+    }
+  ]);
+
+})(angular);

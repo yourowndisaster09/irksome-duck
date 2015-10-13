@@ -82,7 +82,11 @@ module.exports = function (grunt) {
             var modRewrite = require('connect-modrewrite');
 
             return [
-              modRewrite(['!\\.html|\\.js|\\.svg|\\.css|\\.png$ /index.html [L]']),
+              modRewrite([
+                '^/$ /unrouted_home.html [L]',
+                '^/checkout$ /unrouted_checkout.html [L]',
+                '^/search|details$ /index.html [L]'
+              ]),
               connect.static('.tmp'),
               connect().use(
                 '/bower_components',
