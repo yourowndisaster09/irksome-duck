@@ -6,7 +6,7 @@
     function($stateProvider) {
       $stateProvider
         .state("search", {
-          url: "/search?test&region&query&latitude&longitude&locationType&{checkIn:date}&{checkOut:date}&program&guests&rooms&currency&business",
+          url: "/search?q&int&float&str&date",
           views: {
             "header": {
               templateUrl: "views/headers/header2.html"
@@ -14,8 +14,9 @@
             "content": {
               templateUrl: "views/contents/search.html",
               controller: function($stateParams){
-                this.loadedUrl = window.location.href;
+                this.bbqParams = $.deparam.querystring();
                 this.stateParams = $stateParams;
+                this.date = new Date();
               },
               controllerAs: "searchPage"
             }

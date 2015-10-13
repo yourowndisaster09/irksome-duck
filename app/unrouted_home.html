@@ -7,6 +7,15 @@
 
     <title ng-bind="stateData.pageTitle"></title>
 
+    <style>
+        a {
+            display: block;
+        }
+        h4 {
+            margin: 5px 0;
+        }
+    </style>
+
     <!-- build:css(.) styles/vendor.css -->
     <!-- bower:css -->
     <!-- endbower -->
@@ -21,38 +30,37 @@
     <h3>UNROUTED HOME PAGE</h3>
 
     <hr>
-    <h4>ui-sref</h4>
+
+    <h4>$location.path</h4>
     <div>
-        <a ui-sref="home">Home</a>
-        <a ui-sref="search">Search</a>
-        <a ui-sref="details">Details</a>
-        <a ui-sref="checkout">Checkout</a>
+        <a href="" ng-click="mainCtrl.changeLocation('/')">Home</a>
+        <a href="" ng-click="mainCtrl.changeLocation('/search')">Search</a>
+        <a href="" ng-click="mainCtrl.changeLocation('/search', {q: 'New York', int: 123, float: -23.4365, str: 'ubiprogram', date: '11/23/2015'})">Search 1</a>
+        <a href="" ng-click="mainCtrl.changeLocation('/search', {q: 'San Francisco City', int: 456, float: 45.6574, str: 'meowprog', date: '12/25/2015'})">Search 2</a>
+        <a href="" ng-click="mainCtrl.changeLocation('/details')">Details</a>
+        <a href="" ng-click="mainCtrl.changeLocation('/checkout')">Checkout</a>
     </div>
     <hr>
+
     <h4>href</h4>
     <div>
         <a href="/">Home</a>
         <a href="/search">Search</a>
+        <a href="/search?q=New%20York&int=123&float=-23.4365&str=ubiprogram&date=11%2F23%2F2015'">Search 1</a>
+        <a href="/search?q=San%20Francisco%20City&int=456&float=45.6574&str=meowprog&date=12%2F25%2F2015'">Search 2</a>
         <a href="/details">Details</a>
         <a href="/checkout">Checkout</a>
     </div>
     <hr>
+    
     <h4>window.location.href</h4>
     <div>
-        <button ng-click="mainCtrl.redirectTo('/')">Home</button>
-        <button ng-click="mainCtrl.redirectTo('/search')">Search</button>
-        <button ng-click="mainCtrl.redirectTo('/details')">Details</button>
-        <button ng-click="mainCtrl.redirectTo('/checkout')">Checkout</button>
-    </div>
-    <hr>
-    <h4>$location.path</h4>
-    <div>
-        <button ng-click="mainCtrl.changeLocation('/')">Home</button>
-        <button ng-click="mainCtrl.changeLocation('/search')">Search</button>
-        <button ng-click="mainCtrl.changeLocation('/search', {test: 1})">Search {test: 1}</button>
-        <button ng-click="mainCtrl.changeLocation('/search', {test: 2})">Search {test: 2}</button>
-        <button ng-click="mainCtrl.changeLocation('/details')">Details</button>
-        <button ng-click="mainCtrl.changeLocation('/checkout')">Checkout</button>
+        <a href="" ng-click="mainCtrl.redirectTo('/')">Home</a>
+        <a href="" ng-click="mainCtrl.redirectTo('/search')">Search</a>
+        <a href="" ng-click="mainCtrl.redirectTo('/search?q=New%20York&int=123&float=-23.4365&str=ubiprogram&date=11%2F23%2F2015')">Search 1</a>
+        <a href="" ng-click="mainCtrl.redirectTo('/search?q=San%20Francisco%20City&int=456&float=45.6574&str=meowprog&date=12%2F25%2F2015')">Search 2</a>
+        <a href="" ng-click="mainCtrl.redirectTo('/details')">Details</a>
+        <a href="" ng-click="mainCtrl.redirectTo('/checkout')">Checkout</a>
     </div>
     <hr>
 
@@ -65,6 +73,7 @@
     <!-- endbuild -->
 
     <!-- build:js({.tmp,app}) scripts/scripts.js -->
+    <script src="scripts/jquery-bbq.js"></script>
     <script src="scripts/app.js"></script>
     <script src="scripts/controllers/main.js"></script>
     <!-- endbuild -->
