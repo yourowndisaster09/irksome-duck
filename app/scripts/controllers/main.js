@@ -20,8 +20,11 @@ angular.module('testApp')
       $window.location.href = href;
     };
 
-    this.changeLocation = function(href) {
+    this.changeLocation = function(href, params) {
       console.info("changeLocation");
-      $location.path(href);
+      if (params == null) {
+        params = {};
+      }
+      $location.path(href).search(params);
     };
   });

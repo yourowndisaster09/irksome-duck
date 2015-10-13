@@ -15,7 +15,6 @@
     <!-- build:css(.tmp) styles/main.css -->
     <link rel="stylesheet" href="styles/main.css">
     <!-- endbuild -->
-
   </head>
 
   <body ng-controller="MainCtrl as mainCtrl">
@@ -50,6 +49,8 @@
     <div>
         <button ng-click="mainCtrl.changeLocation('/')">$location.path("/")</button>
         <button ng-click="mainCtrl.changeLocation('/search')">$location.path("/search")</button>
+        <button ng-click="mainCtrl.changeLocation('/search', {test: 1})">$location.path("/search").search({test: 1})</button>
+        <button ng-click="mainCtrl.changeLocation('/search', {test: 2})">$location.path("/search").search({test: 2})</button>
         <button ng-click="mainCtrl.changeLocation('/details')">$location.path("/details")</button>
         <button ng-click="mainCtrl.changeLocation('/checkout')">$location.path("/checkout")</button>
     </div>
