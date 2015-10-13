@@ -12,7 +12,11 @@
               templateUrl: "views/headers/header2.html"
             },
             "content": {
-              templateUrl: "views/contents/search.html"
+              templateUrl: "views/contents/search.html",
+              controller: function(){
+                this.loadedUrl = window.location.href;
+              },
+              controllerAs: "searchPage"
             }
           },
           data: {
