@@ -13,8 +13,9 @@
             },
             "content": {
               templateUrl: "views/contents/search.html",
-              controller: function(){
+              controller: function($stateParams){
                 this.loadedUrl = window.location.href;
+                this.stateParams = $stateParams;
               },
               controllerAs: "searchPage"
             }
