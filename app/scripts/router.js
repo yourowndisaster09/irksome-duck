@@ -6,7 +6,7 @@
     function($stateProvider) {
       $stateProvider
         .state("search", {
-          url: "/search?q&int&float&str&date",
+          url: "/search?q&int&float&str&{date:any}",
           views: {
             "header": {
               templateUrl: "views/headers/header2.html"
