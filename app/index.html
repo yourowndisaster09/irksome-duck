@@ -65,12 +65,12 @@
 
     <h4>href</h4>
     <div>
-        <a href="/">Home</a>
-        <a href="/search">Search</a>
-        <a href="/search?q=New%20York&int=123&float=-23.4365&str=ubiprogram&date=11%2F23%2F2015'">Search 1</a>
-        <a href="/search?q=San%20Francisco%20City&int=456&float=45.6574&str=meowprog&date=12%2F25%2F2015'">Search 2</a>
-        <a href="/details">Details</a>
-        <a href="/checkout">Checkout</a>
+        <a ng-href="{{mainCtrl.getUrl('/')}}">Home</a>
+        <a ng-href="{{mainCtrl.getUrl('/search')}}">Search</a>
+        <a ng-href="{{mainCtrl.getUrl('/search', {q: 'New York', int: 123, float: -23.4365, str: 'ubiprogram', date: '11/23/2015'})}}">Search 1</a>
+        <a ng-href="{{mainCtrl.getUrl('/search', {q: 'San Francisco City', int: 456, float: 45.6574, str: 'meowprog', date: '12/25/2015'})}}">Search 2</a>
+        <a ng-href="{{mainCtrl.getUrl('/details')}}">Details</a>
+        <a ng-href="{{mainCtrl.getUrl('/checkout')}}">Checkout</a>
     </div>
     <hr>
 
@@ -78,8 +78,8 @@
     <div>
         <a href="" ng-click="mainCtrl.redirectTo('/')">Home</a>
         <a href="" ng-click="mainCtrl.redirectTo('/search')">Search</a>
-        <a href="" ng-click="mainCtrl.redirectTo('/search?q=New%20York&int=123&float=-23.4365&str=ubiprogram&date=11%2F23%2F2015')">Search 1</a>
-        <a href="" ng-click="mainCtrl.redirectTo('/search?q=San%20Francisco%20City&int=456&float=45.6574&str=meowprog&date=12%2F25%2F2015')">Search 2</a>
+        <a href="" ng-click="mainCtrl.redirectTo('/search', {q: 'New York', int: 123, float: -23.4365, str: 'ubiprogram', date: '11/23/2015'})">Search 1</a>
+        <a href="" ng-click="mainCtrl.redirectTo('/search', {q: 'San Francisco City', int: 456, float: 45.6574, str: 'meowprog', date: '12/25/2015'})">Search 2</a>
         <a href="" ng-click="mainCtrl.redirectTo('/details')">Details</a>
         <a href="" ng-click="mainCtrl.redirectTo('/checkout')">Checkout</a>
     </div>

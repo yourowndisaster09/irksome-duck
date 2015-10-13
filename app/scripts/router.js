@@ -13,9 +13,10 @@
             },
             "content": {
               templateUrl: "views/contents/search.html",
-              controller: function($stateParams){
+              controller: function($stateParams, $location){
                 this.bbqParams = $.deparam.querystring();
                 this.stateParams = $stateParams;
+                this.locationParams = $location.search();
                 this.date = new Date();
               },
               controllerAs: "searchPage"
@@ -23,7 +24,8 @@
           },
           data: {
             pageTitle: "Search page"
-          }
+          },
+          reload: true
         })
         .state("details", {
           url: "/details",

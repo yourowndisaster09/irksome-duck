@@ -15,21 +15,26 @@ angular.module('testApp')
       'Karma'
     ];
 
-    this.redirectTo = function(href) {
-      console.info("redirectTo");
-      $window.location.href = href;
+    this.getUrl = function(path, search) {
+      var url = path;
+      if (search != null) {
+        url = url + '?' + $.param(search);
+      }
+      return url;
     };
 
-    this.changeLocation = function(href, params) {
-      console.info("changeLocation");
-      if (params == null) {
-        params = {};
+    this.redirectTo = function(path, search) {
+      $window.location.href = this.getUrl(path, search);
+    };
+
+    this.changeLocation = function(path, search) {
+      var something = $location.path(path);
+      if (search == null) {
+        something.search(search);
       }
-      $location.path(href).search(params);
     };
 
     this.stateGo = function(stateName, stateParams, stateOptions) {
-      console.info("state.go");
       if (stateParams == null) {
         stateParams = {};
       }
