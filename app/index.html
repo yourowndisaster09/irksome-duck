@@ -18,7 +18,7 @@
   </head>
 
   <body ng-controller="MainCtrl as mainCtrl">
-    <h3>INSIDE ROUTED INDEX</h3>  
+    <h3>INSIDE ROUTED INDEX</h3>
     <div ui-view="header"></div>
     <div ui-view="content"></div>
     <div ui-view="footer"></div>
@@ -56,6 +56,14 @@
         <button ng-click="mainCtrl.changeLocation('/search', {test: 2})">Search {test: 2}</button>
         <button ng-click="mainCtrl.changeLocation('/details')">Details</button>
         <button ng-click="mainCtrl.changeLocation('/checkout')">Checkout</button>
+    </div>
+    <hr>
+    <h4>$state.go</h4>
+    <div>
+        <button ng-click="mainCtrl.stateGo('search', {test: 1})">Search {test: 1}</button>
+        <button ng-click="mainCtrl.stateGo('search', {test: 1}, {reload: true, location: 'replace'})">Search {test: 1} reload, location replace</button>
+        <button ng-click="mainCtrl.stateGo('search', {test: 2})">Search {test: 2}</button>
+        <button ng-click="mainCtrl.stateGo('search', {test: 2}, {reload: true, location: 'replace'})">Search {test: 2} reload, location replace</button>
     </div>
     <hr>
 

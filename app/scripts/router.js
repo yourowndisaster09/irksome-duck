@@ -6,7 +6,7 @@
     function($stateProvider) {
       $stateProvider
         .state("search", {
-          url: "/search",
+          url: "/search?test",
           views: {
             "header": {
               templateUrl: "views/headers/header2.html"
@@ -90,6 +90,8 @@
       }
 
       $rootScope.$on("$locationChangeStart", function(event, newUrl) {
+        console.info("url at $locationChangeStart:", window.location.href);
+
         var path = $location.path();
 
         var key, stateName;
@@ -106,6 +108,18 @@
           $window.location.href = newUrl;
           return;
         }
+      });
+
+      $rootScope.$on("$locationChangeSuccess", function(){
+        console.info("url at $locationChangeSuccess:", window.location.href);
+      });
+
+      $rootScope.$on("$stateChangeStart", function(){
+        console.info("url at $stateChangeStart:", window.location.href);
+      });
+
+      $rootScope.$on("$stateChangeSuccess", function(){
+        console.info("url at $stateChangeSuccess:", window.location.href);
       });
     }
   ]);

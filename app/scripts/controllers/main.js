@@ -8,7 +8,7 @@
  * Controller of the testApp
  */
 angular.module('testApp')
-  .controller('MainCtrl', function ($location, $window) {
+  .controller('MainCtrl', function ($location, $window, $state) {
     this.awesomeThings = [
       'HTML5 Boilerplate',
       'AngularJS',
@@ -27,4 +27,15 @@ angular.module('testApp')
       }
       $location.path(href).search(params);
     };
+
+    this.stateGo = function(stateName, stateParams, stateOptions) {
+      console.info("state.go");
+      if (stateParams == null) {
+        stateParams = {};
+      }
+      if (stateOptions == null) {
+        stateOptions = {};
+      }
+      $state.go(stateName, stateParams, stateOptions);
+    }
   });
