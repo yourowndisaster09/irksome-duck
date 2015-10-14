@@ -29,19 +29,18 @@ angular.module('testApp')
 
     this.changeLocation = function(path, search) {
       if (search == null) {
-        $location.path(path).search(search);
-      } else {
-        $location.path(path);
-      }
+        search = {};
+      } 
+      $location.path(path).search(search);
     };
 
-    this.stateGo = function(stateName, stateParams, stateOptions) {
+    this.stateGo = function(stateName, stateParams) {
       if (stateParams == null) {
         stateParams = {};
       }
-      if (stateOptions == null) {
-        stateOptions = {};
-      }
-      $state.go(stateName, stateParams, stateOptions);
-    }
+      $state.go(stateName, stateParams, {
+        inherit: false,
+        reload: true
+      });
+    };
   });

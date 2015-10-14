@@ -1,9 +1,20 @@
 ;(function(angular) {
   "use strict";
 
+angular.module("testApp")
+  .controller("ContentCtrl", function($stateParams, $location){
+    alert("SHOULD ONLY RUN ONCE PER LOCATION CHANGE");
+    this.stateParams = $stateParams;
+    this.locationParams = $location.search();
+    this.bbqParams = $.deparam.querystring();
+    this.date = new Date();
+  });
+
+
   angular.module("testApp").config([
     "$stateProvider",
-    function($stateProvider) {
+    "$urlRouterProvider",
+    function($stateProvider, $urlRouterProvider) {
       $stateProvider
         .state("search", {
           url: "/search?q&int&float&str&{date:any}",
@@ -13,12 +24,7 @@
             },
             "content": {
               templateUrl: "views/contents/search.html",
-              controller: function($stateParams, $location){
-                this.bbqParams = $.deparam.querystring();
-                this.stateParams = $stateParams;
-                this.locationParams = $location.search();
-                this.date = new Date();
-              },
+              controller: "ContentCtrl",
               controllerAs: "searchPage"
             }
           },
@@ -31,7 +37,9 @@
           url: "/details",
           views: {
             "content": {
-              templateUrl: "views/contents/details.html"
+              templateUrl: "views/contents/details.html",
+              controller: "ContentCtrl",
+              controllerAs: "detailsPage"
             },
             "footer": {
               templateUrl: "views/footers/footer2.html"
@@ -112,6 +120,7 @@
         }
 
         if (stateName == null) {
+          alert("Going outside routed app");
           event.preventDefault();
           $window.location.href = newUrl;
           return;

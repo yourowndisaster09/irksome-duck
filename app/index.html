@@ -4,6 +4,7 @@
     <meta charset="utf-8">
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width">
+    <meta http-equiv="X-UA-Compatible" content="IE=8, IE=9, IE=edge">
 
     <title ng-bind="stateData.pageTitle"></title>
 
@@ -24,6 +25,12 @@
     <!-- build:css(.tmp) styles/main.css -->
     <link rel="stylesheet" href="styles/main.css">
     <!-- endbuild -->
+
+    <!--[if lt IE 9]>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/es5-shim/4.1.13/es5-shim.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/es5-shim/4.1.13/es5-sham.min.js"></script>
+    <script src="//oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+    <![endif]-->
   </head>
 
   <body ng-controller="MainCtrl as mainCtrl">
@@ -36,12 +43,11 @@
 
     <h4>$state.go</h4>
     <div>
-        <a href="" ng-click="mainCtrl.stateGo('search', null, {inherit: false})">Search A</a>
-        <a href="" ng-click="mainCtrl.stateGo('search', null, {reload: true, location: 'replace', inherit: false})">Search B</a>
-        <a href="" ng-click="mainCtrl.stateGo('search', {q: 'New York', int: 123, float: -23.4365, str: 'ubiprogram', date: '11/23/2015'})">Search 1A</a>
-        <a href="" ng-click="mainCtrl.stateGo('search', {q: 'New York', int: 123, float: -23.4365, str: 'ubiprogram', date: '11/23/2015'}, {reload: true, location: 'replace'})">Search 1B</a>
-        <a href="" ng-click="mainCtrl.stateGo('search', {q: 'San Francisco City', int: 456, float: 45.6574, str: 'meowprog', date: '12/25/2015'})">Search 2A</a>
-        <a href="" ng-click="mainCtrl.stateGo('search', {q: 'San Francisco City', int: 456, float: 45.6574, str: 'meowprog', date: '12/25/2015'}, {reload: true, location: 'replace'})">Search 2B</a>
+        <a href="" ng-click="mainCtrl.stateGo('search')">Search</a>
+        <a href="" ng-click="mainCtrl.stateGo('search', {q: 'New York', int: 123, float: -23.4365, str: 'ubiprogram', date: '11/23/2015'})">Search 1</a>
+        <a href="" ng-click="mainCtrl.stateGo('search', {q: 'San Francisco City', int: 456, float: 45.6574, str: 'meowprog', date: '12/25/2015'})">Search 2</a>
+        <a href="" ng-click="mainCtrl.stateGo('search', {q: 'San Francisco City', int: 123, extra: 'bing'})">Search 3</a>
+        <a href="" ng-click="mainCtrl.stateGo('details')">Details</a>
     </div>
     <hr>
 
@@ -51,6 +57,7 @@
         <a href="" ng-click="mainCtrl.changeLocation('/search')">Search</a>
         <a href="" ng-click="mainCtrl.changeLocation('/search', {q: 'New York', int: 123, float: -23.4365, str: 'ubiprogram', date: '11/23/2015'})">Search 1</a>
         <a href="" ng-click="mainCtrl.changeLocation('/search', {q: 'San Francisco City', int: 456, float: 45.6574, str: 'meowprog', date: '12/25/2015'})">Search 2</a>
+        <a href="" ng-click="mainCtrl.changeLocation('/search', {q: 'San Francisco City', int: 123, extra: 'bing'})">Search 3</a>
         <a href="" ng-click="mainCtrl.changeLocation('/details')">Details</a>
         <a href="" ng-click="mainCtrl.changeLocation('/checkout')">Checkout</a>
     </div>
@@ -61,6 +68,7 @@
         <a ui-sref="search">Search</a>
         <a ui-sref="search({q: 'New York', int: 123, float: -23.4365, str: 'ubiprogram', date: '11/23/2015'})">Search 1</a>
         <a ui-sref="search({q: 'San Francisco City', int: 456, float: 45.6574, str: 'meowprog', date: '12/25/2015'})">Search 2</a>
+        <a ui-sref="search({q: 'San Francisco City', int: 123, extra: 'bing'})">Search 3</a>
         <a ui-sref="details">Details</a>
     </div>
     <hr>
@@ -71,6 +79,7 @@
         <a ng-href="{{mainCtrl.getUrl('/search')}}">Search</a>
         <a ng-href="{{mainCtrl.getUrl('/search', {q: 'New York', int: 123, float: -23.4365, str: 'ubiprogram', date: '11/23/2015'})}}">Search 1</a>
         <a ng-href="{{mainCtrl.getUrl('/search', {q: 'San Francisco City', int: 456, float: 45.6574, str: 'meowprog', date: '12/25/2015'})}}">Search 2</a>
+        <a ng-href="{{mainCtrl.getUrl('/search', {q: 'San Francisco City', int: 123, extra: 'bing'})}}">Search 3</a>
         <a ng-href="{{mainCtrl.getUrl('/details')}}">Details</a>
         <a ng-href="{{mainCtrl.getUrl('/checkout')}}">Checkout</a>
     </div>
@@ -82,6 +91,7 @@
         <a href="" ng-click="mainCtrl.redirectTo('/search')">Search</a>
         <a href="" ng-click="mainCtrl.redirectTo('/search', {q: 'New York', int: 123, float: -23.4365, str: 'ubiprogram', date: '11/23/2015'})">Search 1</a>
         <a href="" ng-click="mainCtrl.redirectTo('/search', {q: 'San Francisco City', int: 456, float: 45.6574, str: 'meowprog', date: '12/25/2015'})">Search 2</a>
+        <a href="" ng-click="mainCtrl.redirectTo('/search', {q: 'San Francisco City', int: 123, extra: 'bing'})">Search 3</a>
         <a href="" ng-click="mainCtrl.redirectTo('/details')">Details</a>
         <a href="" ng-click="mainCtrl.redirectTo('/checkout')">Checkout</a>
     </div>
