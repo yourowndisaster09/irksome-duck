@@ -25,7 +25,7 @@
           data: {
             pageTitle: "Search page"
           },
-          reload: true
+          reloadOnSearch: true
         })
         .state("details", {
           url: "/details",

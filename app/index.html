@@ -36,6 +36,8 @@
 
     <h4>$state.go</h4>
     <div>
+        <a href="" ng-click="mainCtrl.stateGo('search', null, {inherit: false})">Search A</a>
+        <a href="" ng-click="mainCtrl.stateGo('search', null, {reload: true, location: 'replace', inherit: false})">Search B</a>
         <a href="" ng-click="mainCtrl.stateGo('search', {q: 'New York', int: 123, float: -23.4365, str: 'ubiprogram', date: '11/23/2015'})">Search 1A</a>
         <a href="" ng-click="mainCtrl.stateGo('search', {q: 'New York', int: 123, float: -23.4365, str: 'ubiprogram', date: '11/23/2015'}, {reload: true, location: 'replace'})">Search 1B</a>
         <a href="" ng-click="mainCtrl.stateGo('search', {q: 'San Francisco City', int: 456, float: 45.6574, str: 'meowprog', date: '12/25/2015'})">Search 2A</a>

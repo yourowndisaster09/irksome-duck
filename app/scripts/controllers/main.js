@@ -28,9 +28,10 @@ angular.module('testApp')
     };
 
     this.changeLocation = function(path, search) {
-      var something = $location.path(path);
       if (search == null) {
-        something.search(search);
+        $location.path(path).search(search);
+      } else {
+        $location.path(path);
       }
     };
 
