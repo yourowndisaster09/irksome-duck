@@ -7,6 +7,12 @@ angular.module("testApp")
     this.locationParams = $location.search();
     this.bbqParams = $.deparam.querystring();
     this.date = new Date();
+
+    var count = 0;
+    this.hashbrown = function() {
+      count = count + 1;
+      $location.hash("count=" + count);
+    };
   });
 
   angular.module("testApp").provider("UrlPathWhitelist", function() {
@@ -121,6 +127,12 @@ angular.module("testApp")
     }
   ]);
 
+  function getLocation(href) {
+    var l = document.createElement("a");
+    l.href = href;
+    return l;
+  }
+
   angular.module("testApp").run([
     "$window",
     "$location",
@@ -129,10 +141,16 @@ angular.module("testApp")
     "$urlRouter",
     "$state",
     function($window, $location, $rootScope, UrlPathWhitelist, $urlRouter, $state) {
-      var shouldRefresh = false;
+      var shouldRefresh = false, first = true;
 
-      $rootScope.$on("$locationChangeStart", function(event, newUrl) {
-        console.info("locationChangeStart");
+      $rootScope.$on("$locationChangeStart", function(event, newUrl, oldUrl) {
+        var newHref = getLocation(newUrl);
+        var oldHref = getLocation(oldUrl);
+
+        if (!(newHref.pathname == oldHref.pathname && newHref.search == oldHref.search && !first)) {
+          first = false;
+          return;
+        }
 
         var path = $location.path();
 
@@ -151,7 +169,6 @@ angular.module("testApp")
           $window.location.href = newUrl;
           return;
         }
-
       });
 
       $rootScope.$on("$stateChangeStart", function(event, toState, toParams) {
