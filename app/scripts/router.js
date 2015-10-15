@@ -3,12 +3,44 @@
 
 angular.module("testApp")
   .controller("ContentCtrl", function($stateParams, $location){
-    alert("SHOULD ONLY RUN ONCE PER LOCATION CHANGE");
     this.stateParams = $stateParams;
     this.locationParams = $location.search();
     this.bbqParams = $.deparam.querystring();
     this.date = new Date();
   });
+
+  angular.module("testApp").provider("UrlPathWhitelist", function() {
+    var whitelist = {};
+
+    this.add = function(name, regex) {
+      whitelist[name] = regex;
+    };
+
+    this.$get = function() {
+      return whitelist;
+    };
+  });
+
+  angular.module("testApp")
+    .config([
+      "$stateProvider",
+      "UrlPathWhitelistProvider",
+      function($stateProvider, UrlPathWhitelistProvider) {
+        var stateFn = $stateProvider.state;
+
+        $stateProvider.state = function() {
+          var definition = arguments[1];
+
+          if (!definition.abstract && definition.url && definition.pathRegex) {
+            var name = arguments[0];
+            var pathRegex = definition.pathRegex;
+            UrlPathWhitelistProvider.add(name, pathRegex);
+          }
+
+          return stateFn.apply(this, arguments);
+        };
+      }
+    ]);
 
 
   angular.module("testApp").config([
@@ -18,6 +50,7 @@ angular.module("testApp")
       $stateProvider
         .state("search", {
           url: "/search?q&int&float&str&{date:any}",
+          pathRegex: /(^\/search)/,
           views: {
             "header": {
               templateUrl: "views/headers/header2.html"
@@ -35,6 +68,7 @@ angular.module("testApp")
         })
         .state("details", {
           url: "/details",
+          pathRegex: /(^\/details)/,
           views: {
             "content": {
               templateUrl: "views/contents/details.html",
@@ -59,84 +93,50 @@ angular.module("testApp")
     }
   ]);
 
+  // var android =
+  //     int((/android (\d+)/.exec(lowercase((window.navigator || {}).userAgent)) || [])[1]),
+  //   boxee = /Boxee/i.test(($window.navigator || {}).userAgent);
+  var history = !!(window.history && window.history.pushState);
+
   angular.module("testApp").config([
     "$locationProvider",
     function($locationProvider) {
-      // console.log("Forcing LocationHtml5Url location mode");
-      var origGet = $locationProvider.$get[4];
-
-      $locationProvider.$get = [
-        "$rootScope",
-        "$browser",
-        "$sniffer",
-        "$rootElement",
-        function($rootScope, $browser, $sniffer, $rootElement) {
-          var sniffer = $sniffer;
-          if (!sniffer.history) {
-            sniffer = {history: true};
-          }
-          return origGet($rootScope, $browser, sniffer, $rootElement);
-        }
-      ];
-
-      $locationProvider.html5Mode(true);
+      $locationProvider.html5Mode(history);
     }
   ]);
 
-  angular.module("testApp").constant("ROUTING_WHITELIST", {
-    SEARCH_PAGE: {
-      regex: /(^\/search)/,
-      stateName: "search"
-    },
-    DETAILS_PAGE: {
-      regex: /(^\/details)/,
-      stateName: "details"
-    }
-  });
-
   angular.module("testApp").run([
-    "$sniffer",
+    "$state",
     "$window",
     "$location",
     "$rootScope",
-    "ROUTING_WHITELIST",
-    function($sniffer, $window, $location, $rootScope, ROUTING_WHITELIST) {
-      if (!$sniffer.history) {
-        return;
-      }
+    "UrlPathWhitelist",
+    function($state, $window, $location, $rootScope, UrlPathWhitelist) {
+      var triggered = false;
 
       $rootScope.$on("$locationChangeStart", function(event, newUrl) {
-        console.info("url at $locationChangeStart:", window.location.href);
+        var path = history ? $location.path() : $window.location.pathname;
 
-        var path = $location.path();
-
-        var key, stateName;
-        for (key in ROUTING_WHITELIST) {
-          var value = ROUTING_WHITELIST[key];
-          if (value.regex.test(path)) {
-            stateName = value.stateName;
+        var stateName;
+        for (var name in UrlPathWhitelist) {
+          var regex = UrlPathWhitelist[name];
+          if (regex.test(path)) {
+            stateName = name;
             break;
           }
         }
 
         if (stateName == null) {
-          alert("Going outside routed app");
           event.preventDefault();
           $window.location.href = newUrl;
           return;
         }
-      });
 
-      $rootScope.$on("$locationChangeSuccess", function(){
-        console.info("url at $locationChangeSuccess:", window.location.href);
-      });
-
-      $rootScope.$on("$stateChangeStart", function(){
-        console.info("url at $stateChangeStart:", window.location.href);
-      });
-
-      $rootScope.$on("$stateChangeSuccess", function(){
-        console.info("url at $stateChangeSuccess:", window.location.href);
+        if (!history && !triggered) {
+          triggered = true;
+          event.preventDefault();
+          $state.go(stateName, $.deparam.querystring(), {location: false});
+        }
       });
     }
   ]);
