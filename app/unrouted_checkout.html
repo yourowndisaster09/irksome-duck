@@ -8,15 +8,6 @@
 
     <title ng-bind="stateData.pageTitle"></title>
 
-    <style>
-        a {
-            display: block;
-        }
-        h4 {
-            margin: 5px 0;
-        }
-    </style>
-
     <!-- build:css(.) styles/vendor.css -->
     <!-- bower:css -->
     <!-- endbower -->
@@ -35,44 +26,137 @@
 
   <body ng-controller="MainCtrl as mainCtrl">
     <h3>UNROUTED CHECKOUT PAGE</h3>
-
-    <hr>
-
-    <h4>$location.path</h4>
-    <div>
-        <a href="" ng-click="mainCtrl.changeLocation('/')">Home</a>
-        <a href="" ng-click="mainCtrl.changeLocation('/search')">Search</a>
-        <a href="" ng-click="mainCtrl.changeLocation('/search', {q: 'New York', int: 123, float: -23.4365, str: 'ubiprogram', date: '11/23/2015'})">Search 1</a>
-        <a href="" ng-click="mainCtrl.changeLocation('/search', {q: 'San Francisco City', int: 456, float: 45.6574, str: 'meowprog', date: '12/25/2015'})">Search 2</a>
-        <a href="" ng-click="mainCtrl.changeLocation('/search', {q: 'San Francisco City', int: 123, extra: 'bing'})">Search 3</a>
-        <a href="" ng-click="mainCtrl.changeLocation('/details')">Details</a>
-        <a href="" ng-click="mainCtrl.changeLocation('/checkout')">Checkout</a>
-    </div>
-    <hr>
-
-    <h4>href</h4>
-    <div>
-        <a ng-href="{{mainCtrl.getUrl('/')}}">Home</a>
-        <a ng-href="{{mainCtrl.getUrl('/search')}}">Search</a>
-        <a ng-href="{{mainCtrl.getUrl('/search', {q: 'New York', int: 123, float: -23.4365, str: 'ubiprogram', date: '11/23/2015'})}}">Search 1</a>
-        <a ng-href="{{mainCtrl.getUrl('/search', {q: 'San Francisco City', int: 456, float: 45.6574, str: 'meowprog', date: '12/25/2015'})}}">Search 2</a>
-        <a ng-href="{{mainCtrl.getUrl('/search', {q: 'San Francisco City', int: 123, extra: 'bing'})}}">Search 3</a>
-        <a ng-href="{{mainCtrl.getUrl('/details')}}">Details</a>
-        <a ng-href="{{mainCtrl.getUrl('/checkout')}}">Checkout</a>
-    </div>
-    <hr>
     
-    <h4>window.location.href</h4>
-    <div>
-        <a href="" ng-click="mainCtrl.redirectTo('/')">Home</a>
-        <a href="" ng-click="mainCtrl.redirectTo('/search')">Search</a>
-        <a href="" ng-click="mainCtrl.redirectTo('/search', {q: 'New York', int: 123, float: -23.4365, str: 'ubiprogram', date: '11/23/2015'})">Search 1</a>
-        <a href="" ng-click="mainCtrl.redirectTo('/search', {q: 'San Francisco City', int: 456, float: 45.6574, str: 'meowprog', date: '12/25/2015'})">Search 2</a>
-        <a href="" ng-click="mainCtrl.redirectTo('/search', {q: 'San Francisco City', int: 123, extra: 'bing'})">Search 3</a>
-        <a href="" ng-click="mainCtrl.redirectTo('/details')">Details</a>
-        <a href="" ng-click="mainCtrl.redirectTo('/checkout')">Checkout</a>
-    </div>
-    <hr>
+    <table>
+        <thead>
+            <tr>
+                <th>$state.go</th>
+                <th>$location.path</th>
+                <th>ui-sref</th>
+                <th>a href</th>
+                <th>window.location.href</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>
+                    
+                </td>
+                <td>
+                    <a href="" ng-click="mainCtrl.changeLocation('/')">Home</a>
+                </td>
+                <td>
+
+                </td>
+                <td>
+                    <a ng-href="{{mainCtrl.getUrl('/')}}">Home</a>
+                </td>
+                <td>
+                    <a href="" ng-click="mainCtrl.redirectTo('/')">Home</a>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <a href="" ng-click="mainCtrl.stateGo('search')">Search</a>
+                </td>
+                <td>
+                    <a href="" ng-click="mainCtrl.changeLocation('/search')">Search</a>
+                </td>
+                <td>
+                    <a ui-sref="search">Search</a>
+                </td>
+                <td>
+                    <a ng-href="{{mainCtrl.getUrl('/search')}}">Search</a>
+                </td>
+                <td>
+                    <a href="" ng-click="mainCtrl.redirectTo('/search')">Search</a>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <a href="" ng-click="mainCtrl.stateGo('search', {q: 'New York', int: 123, float: -23.4365, str: 'ubiprogram', date: '11/23/2015'})">Search 1</a>
+                </td>
+                <td>
+                    <a href="" ng-click="mainCtrl.changeLocation('/search', {q: 'New York', int: 123, float: -23.4365, str: 'ubiprogram', date: '11/23/2015'})">Search 1</a>
+                </td>
+                <td>
+                    <a ui-sref="search({q: 'New York', int: 123, float: -23.4365, str: 'ubiprogram', date: '11/23/2015'})">Search 1</a>
+                </td>
+                <td>
+                    <a ng-href="{{mainCtrl.getUrl('/search', {q: 'New York', int: 123, float: -23.4365, str: 'ubiprogram', date: '11/23/2015'})}}">Search 1</a>
+                </td>
+                <td>
+                    <a href="" ng-click="mainCtrl.redirectTo('/search', {q: 'New York', int: 123, float: -23.4365, str: 'ubiprogram', date: '11/23/2015'})">Search 1</a>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <a href="" ng-click="mainCtrl.stateGo('search', {q: 'San Francisco City', int: 456, float: 45.6574, str: 'meowprog', date: '12/25/2015'})">Search 2</a>
+                </td>
+                <td>
+                    <a href="" ng-click="mainCtrl.changeLocation('/search', {q: 'San Francisco City', int: 456, float: 45.6574, str: 'meowprog', date: '12/25/2015'})">Search 2</a>
+                </td>
+                <td>
+                    <a ui-sref="search({q: 'San Francisco City', int: 456, float: 45.6574, str: 'meowprog', date: '12/25/2015'})">Search 2</a>
+                </td>
+                <td>
+                    <a ng-href="{{mainCtrl.getUrl('/search', {q: 'San Francisco City', int: 456, float: 45.6574, str: 'meowprog', date: '12/25/2015'})}}">Search 2</a>
+                </td>
+                <td>
+                    <a href="" ng-click="mainCtrl.redirectTo('/search', {q: 'San Francisco City', int: 456, float: 45.6574, str: 'meowprog', date: '12/25/2015'})">Search 2</a>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <a href="" ng-click="mainCtrl.stateGo('search', {q: 'San Francisco City', int: 123, extra: 'bing'})">Search 3</a>
+                </td>
+                <td>
+                    <a href="" ng-click="mainCtrl.changeLocation('/search', {q: 'San Francisco City', int: 123, extra: 'bing'})">Search 3</a>
+                </td>
+                <td>
+                    <a ui-sref="search({q: 'San Francisco City', int: 123, extra: 'bing'})">Search 3</a>
+                </td>
+                <td>
+                    <a ng-href="{{mainCtrl.getUrl('/search', {q: 'San Francisco City', int: 123, extra: 'bing'})}}">Search 3</a>
+                </td>
+                <td>
+                    <a href="" ng-click="mainCtrl.redirectTo('/search', {q: 'San Francisco City', int: 123, extra: 'bing'})">Search 3</a>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <a href="" ng-click="mainCtrl.stateGo('details')">Details</a>
+                </td>
+                <td>
+                    <a href="" ng-click="mainCtrl.changeLocation('/details')">Details</a>
+                </td>
+                <td>
+                    <a ui-sref="details">Details</a>
+                </td>
+                <td>
+                    <a ng-href="{{mainCtrl.getUrl('/details')}}">Details</a>
+                </td>
+                <td>
+                    <a href="" ng-click="mainCtrl.redirectTo('/details')">Details</a>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                </td>
+                <td>
+                    <a href="" ng-click="mainCtrl.changeLocation('/checkout')">Checkout</a>
+                </td>
+                <td>
+                </td>
+                <td>
+                    <a ng-href="{{mainCtrl.getUrl('/checkout')}}">Checkout</a>
+                </td>
+                <td>
+                    <a href="" ng-click="mainCtrl.redirectTo('/checkout')">Checkout</a>
+                </td>
+            </tr>
+        </tbody>
+    </table>
 
     <!-- build:js(.) scripts/vendor.js -->
     <!-- bower:js -->
