@@ -101,23 +101,42 @@ angular.module("testApp")
   angular.module("testApp").config([
     "$locationProvider",
     function($locationProvider) {
-      $locationProvider.html5Mode(history);
+      var origGet = $locationProvider.$get[4];
+
+      $locationProvider.$get = [
+        "$rootScope",
+        "$browser",
+        "$sniffer",
+        "$rootElement",
+        function($rootScope, $browser, $sniffer, $rootElement) {
+          var sniffer = $sniffer;
+          if (!sniffer.history) {
+            sniffer = {history: true};
+          }
+          return origGet($rootScope, $browser, sniffer, $rootElement);
+        }
+      ];
+
+      $locationProvider.html5Mode(true);
     }
   ]);
 
   angular.module("testApp").run([
-    "$state",
     "$window",
     "$location",
     "$rootScope",
     "UrlPathWhitelist",
-    function($state, $window, $location, $rootScope, UrlPathWhitelist) {
-      var triggered = false;
+    "$urlRouter",
+    "$state",
+    function($window, $location, $rootScope, UrlPathWhitelist, $urlRouter, $state) {
+      var shouldRefresh = false;
 
       $rootScope.$on("$locationChangeStart", function(event, newUrl) {
-        var path = history ? $location.path() : $window.location.pathname;
+        console.info("locationChangeStart");
 
-        var stateName;
+        var path = $location.path();
+
+        var stateName = null;
         for (var name in UrlPathWhitelist) {
           var regex = UrlPathWhitelist[name];
           if (regex.test(path)) {
@@ -126,16 +145,23 @@ angular.module("testApp")
           }
         }
 
-        if (stateName == null) {
+        shouldRefresh = shouldRefresh || stateName == null;
+        if (shouldRefresh) {
           event.preventDefault();
           $window.location.href = newUrl;
           return;
         }
 
-        if (!history && !triggered) {
-          triggered = true;
+      });
+
+      $rootScope.$on("$stateChangeStart", function(event, toState, toParams) {
+        if (shouldRefresh) {
           event.preventDefault();
-          $state.go(stateName, $.deparam.querystring(), {location: false});
+          $window.location.href = $state.href(toState, toParams);
+          return;
+        }
+        if (!history && !shouldRefresh) {
+          shouldRefresh = true;
         }
       });
     }
