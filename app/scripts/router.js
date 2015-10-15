@@ -127,12 +127,6 @@ angular.module("testApp")
     }
   ]);
 
-  function getLocation(href) {
-    var l = document.createElement("a");
-    l.href = href;
-    return l;
-  }
-
   angular.module("testApp").run([
     "$window",
     "$location",
@@ -146,11 +140,14 @@ angular.module("testApp")
       $rootScope.$on("$locationChangeStart", function(event, newUrl, oldUrl) {
         var newHref = getLocation(newUrl);
         var oldHref = getLocation(oldUrl);
+        var samePath = newHref.pathname == oldHref.pathname;
+        var sameSearch = newHref.search == oldHref.search;
 
-        if (!(newHref.pathname == oldHref.pathname && newHref.search == oldHref.search && !first)) {
-          first = false;
+        if (samePath && sameSearch && !first) {
+          console.info("NO CHANGE");
           return;
         }
+        first = false;
 
         var path = $location.path();
 
@@ -181,6 +178,12 @@ angular.module("testApp")
           shouldRefresh = true;
         }
       });
+
+      function getLocation(href) {
+        var l = document.createElement("a");
+        l.href = href;
+        return l;
+      }
     }
   ]);
 
