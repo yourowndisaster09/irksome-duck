@@ -138,6 +138,7 @@ angular.module("testApp")
       var shouldRefresh = false, first = true;
 
       $rootScope.$on("$locationChangeStart", function(event, newUrl, oldUrl) {
+        alert("LOCATIONCHANGE");
         var newHref = getLocation(newUrl);
         var oldHref = getLocation(oldUrl);
         var samePath = newHref.pathname === oldHref.pathname;
@@ -184,6 +185,8 @@ angular.module("testApp")
       });
 
       $rootScope.$on("$stateChangeStart", function(event, toState, toParams) {
+        alert("STATECHANGE");
+
         if (!history) {
           if (shouldRefresh) {
             var newUrl = $state.href(toState, toParams);
@@ -191,7 +194,7 @@ angular.module("testApp")
             alert("LEAVING VIA STATECHANGE");
             $window.location.href = newUrl;
           } else {
-            alert("SHOULD REFRESH BECAUSE NO HISTORY");
+            alert("SETTING SHOULD REFRESH BECAUSE NO HISTORY");
             shouldRefresh = true;
           }
         }
