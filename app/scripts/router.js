@@ -140,18 +140,24 @@ angular.module("testApp")
       $rootScope.$on("$locationChangeStart", function(event, newUrl, oldUrl) {
         var newHref = getLocation(newUrl);
         var oldHref = getLocation(oldUrl);
-        var samePath = newHref.pathname == oldHref.pathname;
-        var sameSearch = newHref.search == oldHref.search;
+        var samePath = newHref.pathname === oldHref.pathname;
+        var sameSearch = newHref.search === oldHref.search;
 
         if (samePath && sameSearch && !first) {
-          console.info("NO CHANGE");
           return;
         }
         first = false;
 
-        var path = $location.path();
+        if (shouldRefresh) {
+          event.preventDefault();
+          alert("LEAVING VIA SHOULD REFRESH");
+          $window.location.href = newUrl;
+          return;
+        }
 
-        var stateName = null;
+        var path = $location.path(),
+          stateName = null;
+
         for (var name in UrlPathWhitelist) {
           var regex = UrlPathWhitelist[name];
           if (regex.test(path)) {
@@ -160,22 +166,34 @@ angular.module("testApp")
           }
         }
 
-        shouldRefresh = shouldRefresh || stateName == null;
-        if (shouldRefresh) {
+        // Unmapped states should refresh page
+        if (stateName == null) {
           event.preventDefault();
+          alert("LEAVING VIA NO MAPPING");
           $window.location.href = newUrl;
           return;
+        }
+
+        if (!history) {
+          event.preventDefault();
+          alert("NO HISTORY GO MANUAL");
+          $state.go(stateName, $location.search(), {
+            location: false
+          });
         }
       });
 
       $rootScope.$on("$stateChangeStart", function(event, toState, toParams) {
-        if (shouldRefresh) {
-          event.preventDefault();
-          $window.location.href = $state.href(toState, toParams);
-          return;
-        }
-        if (!history && !shouldRefresh) {
-          shouldRefresh = true;
+        if (!history) {
+          if (shouldRefresh) {
+            var newUrl = $state.href(toState, toParams);
+            event.preventDefault();
+            alert("LEAVING VIA STATECHANGE");
+            $window.location.href = newUrl;
+          } else {
+            alert("SHOULD REFRESH BECAUSE NO HISTORY");
+            shouldRefresh = true;
+          }
         }
       });
 
