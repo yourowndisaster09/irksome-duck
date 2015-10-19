@@ -3,6 +3,7 @@
 
 angular.module("testApp")
   .controller("ContentCtrl", function($stateParams, $location){
+    // alert("SHOULD RUN ONCE PER PAGE LOAD!!!!!!!!!!!!!!!!!!!!!");
     this.stateParams = $stateParams;
     this.locationParams = $location.search();
     this.bbqParams = $.deparam.querystring();
@@ -99,11 +100,6 @@ angular.module("testApp")
     }
   ]);
 
-  // var android =
-  //     int((/android (\d+)/.exec(lowercase((window.navigator || {}).userAgent)) || [])[1]),
-  //   boxee = /Boxee/i.test(($window.navigator || {}).userAgent);
-  var history = !!(window.history && window.history.pushState);
-
   angular.module("testApp").config([
     "$locationProvider",
     function($locationProvider) {
@@ -117,7 +113,9 @@ angular.module("testApp")
         function($rootScope, $browser, $sniffer, $rootElement) {
           var sniffer = $sniffer;
           if (!sniffer.history) {
-            sniffer = {history: true};
+            sniffer = {
+              history: true
+            };
           }
           return origGet($rootScope, $browser, sniffer, $rootElement);
         }
@@ -134,11 +132,12 @@ angular.module("testApp")
     "UrlPathWhitelist",
     "$urlRouter",
     "$state",
-    function($window, $location, $rootScope, UrlPathWhitelist, $urlRouter, $state) {
+    "$sniffer",
+    function($window, $location, $rootScope, UrlPathWhitelist, $urlRouter, $state, $sniffer) {
       var shouldRefresh = false, first = true;
 
       $rootScope.$on("$locationChangeStart", function(event, newUrl, oldUrl) {
-        alert("LOCATIONCHANGE");
+        console.info("LOCATIONCHANGE");
         var newHref = getLocation(newUrl);
         var oldHref = getLocation(oldUrl);
         var samePath = newHref.pathname === oldHref.pathname;
@@ -151,7 +150,7 @@ angular.module("testApp")
 
         if (shouldRefresh) {
           event.preventDefault();
-          alert("LEAVING VIA SHOULD REFRESH");
+          console.info("LEAVING VIA SHOULD REFRESH");
           $window.location.href = newUrl;
           return;
         }
@@ -170,14 +169,14 @@ angular.module("testApp")
         // Unmapped states should refresh page
         if (stateName == null) {
           event.preventDefault();
-          alert("LEAVING VIA NO MAPPING");
+          console.info("LEAVING VIA NO MAPPING");
           $window.location.href = newUrl;
           return;
         }
 
-        if (!history) {
+        if (!$sniffer.history) {
           event.preventDefault();
-          alert("NO HISTORY GO MANUAL");
+          console.info("NO HISTORY GO MANUAL");
           $state.go(stateName, $location.search(), {
             location: false
           });
@@ -185,16 +184,16 @@ angular.module("testApp")
       });
 
       $rootScope.$on("$stateChangeStart", function(event, toState, toParams) {
-        alert("STATECHANGE");
+        console.info("STATECHANGE");
 
-        if (!history) {
+        if (!$sniffer.history) {
           if (shouldRefresh) {
             var newUrl = $state.href(toState, toParams);
             event.preventDefault();
-            alert("LEAVING VIA STATECHANGE");
+            console.info("LEAVING VIA STATECHANGE");
             $window.location.href = newUrl;
           } else {
-            alert("SETTING SHOULD REFRESH BECAUSE NO HISTORY");
+            console.info("SETTING SHOULD REFRESH BECAUSE NO HISTORY");
             shouldRefresh = true;
           }
         }
