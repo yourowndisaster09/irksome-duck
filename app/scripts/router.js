@@ -3,7 +3,7 @@
 
 angular.module("testApp")
   .controller("ContentCtrl", function($stateParams, $location){
-    // alert("SHOULD RUN ONCE PER PAGE LOAD!!!!!!!!!!!!!!!!!!!!!");
+    console.error("SHOULD RUN ONCE PER PAGE LOAD!!!!!!!!!!!!!!!!!!!!!");
     this.stateParams = $stateParams;
     this.locationParams = $location.search();
     this.bbqParams = $.deparam.querystring();
@@ -134,30 +134,30 @@ angular.module("testApp")
     "$state",
     "$sniffer",
     function($window, $location, $rootScope, UrlPathWhitelist, $urlRouter, $state, $sniffer) {
-      var shouldRefresh = false, first = true;
+      var shouldReload = false;
+      var firstLocationChange = true;
 
       $rootScope.$on("$locationChangeStart", function(event, newUrl, oldUrl) {
-        console.info("LOCATIONCHANGE");
-        var newHref = getLocation(newUrl);
-        var oldHref = getLocation(oldUrl);
-        var samePath = newHref.pathname === oldHref.pathname;
-        var sameSearch = newHref.search === oldHref.search;
-
-        if (samePath && sameSearch && !first) {
-          return;
-        }
-        first = false;
-
-        if (shouldRefresh) {
+        // First check-up on shouldReload
+        if (shouldReload) {
           event.preventDefault();
-          console.info("LEAVING VIA SHOULD REFRESH");
           $window.location.href = newUrl;
           return;
         }
 
-        var path = $location.path(),
-          stateName = null;
+        // Always ignore hash changes
+        var newHref = getLocation(newUrl);
+        var oldHref = getLocation(oldUrl);
+        var samePath = newHref.pathname === oldHref.pathname;
+        var sameSearch = newHref.search === oldHref.search;
+        if (samePath && sameSearch && !firstLocationChange) {
+          return;
+        }
+        firstLocationChange = false;
 
+        // Test current location path with the mappings in the whitelist
+        var path = $location.path();
+        var stateName = null;
         for (var name in UrlPathWhitelist) {
           var regex = UrlPathWhitelist[name];
           if (regex.test(path)) {
@@ -169,35 +169,33 @@ angular.module("testApp")
         // Unmapped states should refresh page
         if (stateName == null) {
           event.preventDefault();
-          console.info("LEAVING VIA NO MAPPING");
           $window.location.href = newUrl;
           return;
         }
 
+        // Manually transition to state if no history
         if (!$sniffer.history) {
           event.preventDefault();
-          console.info("NO HISTORY GO MANUAL");
           $state.go(stateName, $location.search(), {
             location: false
           });
         }
       });
 
-      $rootScope.$on("$stateChangeStart", function(event, toState, toParams) {
-        console.info("STATECHANGE");
-
-        if (!$sniffer.history) {
-          if (shouldRefresh) {
+      if (!$sniffer.history) {
+        // We should always reload page whenever state changes except the first manual transition.
+        // I did not use notify:false on the manual transition because it will also not
+        // emit $stateChangeSuccess which triggers recompiling of views.
+        $rootScope.$on("$stateChangeStart", function(event, toState, toParams) {
+          if (shouldReload) {
             var newUrl = $state.href(toState, toParams);
             event.preventDefault();
-            console.info("LEAVING VIA STATECHANGE");
             $window.location.href = newUrl;
           } else {
-            console.info("SETTING SHOULD REFRESH BECAUSE NO HISTORY");
-            shouldRefresh = true;
+            shouldReload = true;
           }
-        }
-      });
+        });
+      }
 
       function getLocation(href) {
         var l = document.createElement("a");
