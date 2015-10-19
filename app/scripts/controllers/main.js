@@ -18,7 +18,10 @@ angular.module('testApp')
     this.getUrl = function(path, search) {
       var url = path;
       if (search != null) {
-        url = url + '?' + $.param(search);
+        var searchStr = $.param(search);
+        // Prevent extra location.replace that might hurt performance on nonHtml5 browsers
+        searchStr = searchStr.replace(/\+/g,'%20');
+        url = url + '?' + searchStr;
       }
       return url;
     };
