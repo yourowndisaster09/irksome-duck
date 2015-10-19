@@ -20,7 +20,12 @@ angular.module('testApp')
       if (search != null) {
         var searchStr = $.param(search);
         // Prevent extra location.replace that might hurt performance on nonHtml5 browsers
-        searchStr = searchStr.replace(/\+/g,'%20');
+        searchStr = searchStr
+          .replace(/\+/g,'%20')
+          .replace(/%40/gi, '@')
+          .replace(/%3A/gi, ':')
+          .replace(/%24/g, '$')
+          .replace(/%2C/gi, ',');
         url = url + '?' + searchStr;
       }
       return url;
@@ -33,7 +38,7 @@ angular.module('testApp')
     this.changeLocation = function(path, search) {
       if (search == null) {
         search = {};
-      } 
+      }
       $location.path(path).search(search);
     };
 
