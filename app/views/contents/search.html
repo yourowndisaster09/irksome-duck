@@ -1,7 +1,11 @@
 <h3>ROUTED Search page</h3>
 <h2>deparam: {{searchPage.bbqParams}}</h2>
 <h2>stateParams: {{searchPage.stateParams}}</h2>
-<h2>$location.search: {{searchPage.locationParams}}</h2>
+
+<hr>
+<h2>$location.path: {{searchPage.$location.path()}}</h2>
+<h2>$location.search: {{searchPage.$location.search()}}</h2>
+<h2>$location.hash: {{searchPage.$location.hash()}}</h2>
 <h2>date: {{searchPage.date}}</h2>
 
 <button ng-click="searchPage.hashbrown()" style="font-size:40px;">Hash brown</button>

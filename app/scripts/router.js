@@ -5,7 +5,7 @@ angular.module("testApp")
   .controller("ContentCtrl", function($stateParams, $location){
     alert("SHOULD RUN ONCE PER PAGE LOAD!!!!!!!!!!!!!!!!!!!!!");
     this.stateParams = $stateParams;
-    this.locationParams = $location.search();
+    this.$location = $location;
     this.bbqParams = $.deparam.querystring();
     this.date = new Date();
 
