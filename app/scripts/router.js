@@ -154,6 +154,7 @@ angular.module("testApp")
         if (shouldReload) {
           event.preventDefault();
           // $window.location.href = newUrl;
+          $rootScope.$$watchers = [];
           RouteHelper.redirectToUrl(newUrl);
           return;
         }
@@ -173,6 +174,7 @@ angular.module("testApp")
         if (stateName == null) {
           event.preventDefault();
           // $window.location.href = newUrl;
+          $rootScope.$$watchers = [];
           RouteHelper.redirectToUrl(newUrl);
           return;
         }
@@ -192,8 +194,9 @@ angular.module("testApp")
         // emit $stateChangeSuccess which triggers recompiling of views.
         $rootScope.$on("$stateChangeStart", function(event, toState, toParams) {
           if (shouldReload) {
-            event.preventDefault();
             var newUrl = $state.href(toState, toParams);
+            event.preventDefault();
+            $rootScope.$$watchers = [];
             RouteHelper.redirectToUrl(newUrl);
           } else {
             shouldReload = true;
