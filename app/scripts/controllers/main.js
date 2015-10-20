@@ -14,15 +14,18 @@ angular.module("testApp")
     "$state",
     "RouteHelper",
     function ($location, $window, $state, RouteHelper) {
-      this.redirectTo = function(path, search) {
-        RouteHelper.redirectTo(path, search);
+      this.redirectTo = function(path, search, hash) {
+        RouteHelper.redirectTo(path, search, hash);
       };
 
-      this.changeLocation = function(path, search) {
+      this.changeLocation = function(path, search, hash) {
         if (search == null) {
           search = {};
         }
-        $location.path(path).search(search);
+        if (hash == null) {
+          hash = "";
+        }
+        $location.path(path).search(search).hash(hash);
       };
 
       this.stateGo = function(stateName, stateParams) {

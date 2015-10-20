@@ -138,13 +138,7 @@ angular.module("testApp")
       var firstLocationChange = true;
 
       $rootScope.$on("$locationChangeStart", function(event, newUrl, oldUrl) {
-        // First check-up on shouldReload
-        if (shouldReload) {
-          event.preventDefault();
-          // $window.location.href = newUrl;
-          RouteHelper.redirectToUrl(newUrl);
-          return;
-        }
+        alert("locationChangeStart")
 
         // Always ignore hash changes
         var newHref = getLocation(newUrl);
@@ -155,6 +149,14 @@ angular.module("testApp")
           return;
         }
         firstLocationChange = false;
+
+        // First check-up on shouldReload
+        if (shouldReload) {
+          event.preventDefault();
+          // $window.location.href = newUrl;
+          RouteHelper.redirectToUrl(newUrl);
+          return;
+        }
 
         // Test current location path with the mappings in the whitelist
         var path = $location.path();
@@ -190,8 +192,8 @@ angular.module("testApp")
         // emit $stateChangeSuccess which triggers recompiling of views.
         $rootScope.$on("$stateChangeStart", function(event, toState, toParams) {
           if (shouldReload) {
-            var newUrl = $state.href(toState, toParams);
             event.preventDefault();
+            var newUrl = $state.href(toState, toParams);
             RouteHelper.redirectToUrl(newUrl);
           } else {
             shouldReload = true;
