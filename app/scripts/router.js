@@ -3,7 +3,7 @@
 
 angular.module("testApp")
   .controller("ContentCtrl", function($stateParams, $location){
-    console.error("SHOULD RUN ONCE PER PAGE LOAD!!!!!!!!!!!!!!!!!!!!!");
+    alert("SHOULD RUN ONCE PER PAGE LOAD!!!!!!!!!!!!!!!!!!!!!");
     this.stateParams = $stateParams;
     this.locationParams = $location.search();
     this.bbqParams = $.deparam.querystring();
@@ -48,7 +48,6 @@ angular.module("testApp")
         };
       }
     ]);
-
 
   angular.module("testApp").config([
     "$stateProvider",
@@ -130,10 +129,11 @@ angular.module("testApp")
     "$location",
     "$rootScope",
     "UrlPathWhitelist",
+    "RouteHelper",
     "$urlRouter",
     "$state",
     "$sniffer",
-    function($window, $location, $rootScope, UrlPathWhitelist, $urlRouter, $state, $sniffer) {
+    function($window, $location, $rootScope, UrlPathWhitelist, RouteHelper, $urlRouter, $state, $sniffer) {
       var shouldReload = false;
       var firstLocationChange = true;
 
@@ -141,7 +141,8 @@ angular.module("testApp")
         // First check-up on shouldReload
         if (shouldReload) {
           event.preventDefault();
-          $window.location.href = newUrl;
+          // $window.location.href = newUrl;
+          RouteHelper.redirectToUrl(newUrl);
           return;
         }
 
@@ -169,7 +170,8 @@ angular.module("testApp")
         // Unmapped states should refresh page
         if (stateName == null) {
           event.preventDefault();
-          $window.location.href = newUrl;
+          // $window.location.href = newUrl;
+          RouteHelper.redirectToUrl(newUrl);
           return;
         }
 
@@ -190,7 +192,7 @@ angular.module("testApp")
           if (shouldReload) {
             var newUrl = $state.href(toState, toParams);
             event.preventDefault();
-            $window.location.href = newUrl;
+            RouteHelper.redirectToUrl(newUrl);
           } else {
             shouldReload = true;
           }
