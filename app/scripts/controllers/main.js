@@ -32,6 +32,7 @@ angular.module("testApp")
         if (stateParams == null) {
           stateParams = {};
         }
+        stateParams["#"] = "fresh=true";
         $state.go(stateName, stateParams, {
           inherit: false,
           reload: true,
