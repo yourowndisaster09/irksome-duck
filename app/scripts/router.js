@@ -3,7 +3,7 @@
 
 angular.module("testApp")
   .controller("ContentCtrl", function($stateParams, $location){
-    alert("SHOULD RUN ONCE PER PAGE LOAD!!!!!!!!!!!!!!!!!!!!!");
+    //alert("SHOULD RUN ONCE PER PAGE LOAD!!!!!!!!!!!!!!!!!!!!!");
     this.stateParams = $stateParams;
     this.$location = $location;
     this.bbqParams = $.deparam.querystring();
@@ -138,7 +138,7 @@ angular.module("testApp")
       var firstLocationChange = true;
 
       $rootScope.$on("$locationChangeStart", function(event, newUrl, oldUrl) {
-        alert("locationChangeStart")
+        //alert("locationChangeStart")
 
         // Always ignore hash changes
         var newHref = getLocation(newUrl);
