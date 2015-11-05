@@ -13,6 +13,7 @@
           replace: false,
           terminal: true,
           priority: 1000,
+          scope: true,
           link: function link(scope, element, attrs) {
             if (!attrs.tooltipTemplate) {
               return;
@@ -23,13 +24,21 @@
 
             var childScope = scope.$new();
             var template = $templateCache.get(attrs.tooltipTemplate);
-            var linkedTemplate = $compile(template)(childScope);
+            var templateEl = $("<div></div>").html(template);
+            var linkedTemplate = $compile(templateEl)(childScope);
+            var initialCompiled = false;
 
-            function setTooltip() {
-              var linkedEl = $("<div></div>").append(linkedTemplate);
-              element.attr("tooltip-html-unsafe", linkedEl.html());
+            function setTooltip(compileScope) {
+              console.info(linkedTemplate.html())
+              element.removeAttr("tooltip-html-unsafe");
+              element.attr("tooltip-html-unsafe", linkedTemplate.html());
+
+              if (compileScope) {
+                scope = compileScope;
+              }
 
               $compile(element)(scope);
+              initialCompiled = true;
             }
 
             if (attrs.tooltipTemplateRefresh) {
@@ -45,12 +54,20 @@
                   return collection;
                 },
                 function(newVal, oldVal){
-                  console.info(newVal, oldVal)
+                  if (!initialCompiled) {
+                    initialCompiled = true;
+                    setTooltip();
+                    return;
+                  }
+                  console.info(newVal, oldVal);
                   if (compileTimeout) {
                     $timeout.cancel(compileTimeout);
                   }
                   compileTimeout = $timeout(function(){
-                    setTooltip();
+                    var newScope = scope.$parent;
+                    scope.$destroy();
+                    $(element).off();
+                    setTooltip(newScope);
                   }, 100);
                 }
               );
@@ -81,7 +98,7 @@
           },
           controllerAs: "testCtrl",
           scope: false,
-          template: "<h1>TEST</h1><strong>{{testCtrl.result}}</strong><button class='ng-hide' ng-show='!!testCtrl.result' ng-click='testCtrl.clearResult()'>CLEAR RESULT</button>",
+          template: "<h1>TEST</h1><strong>{{testCtrl.result}}</strong><button class='ng-hide test-click-btn' ng-show='!!testCtrl.result' ng-click='testCtrl.clearResult()'>CLEAR RESULT</button>",
           link: function(scope, element, attrs, ctrl) {
             var deferred = $q.defer();
             setTimeout(function(){
@@ -92,6 +109,13 @@
               console.info("promise resolved", result);
               ctrl.setResult(result);
             });
+
+            $("body").on("click", ".test-click-btn", function(event){
+              var $target = $(event.target);
+              var $element = $(element);
+              console.info(element, $target);
+              console.info($.contains($element[0], $target[0]));
+            })
           }
         };
       }
