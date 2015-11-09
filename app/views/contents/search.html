@@ -32,6 +32,15 @@
     tooltip-placement="right"
     tooltip-trigger="click"
     tooltip-template-refresh="['testCtrl.result']">tooltip-template</a>
+
+</div>
+
+<script type="text/ng-template" id="/boom.html">
+    <div ng-init='count = 1' ng-click='count = count+1' ng-bind='count'></div>
+</script>
+
+<div>
+  <a href="" boomer="<span>CLICK CLOCK</span><div ng-init='count = 1' ng-click='count = count+1' ng-bind='count'></div><div test-directive>hello world</div>" tooltip-trigger="click">tooltip-template-v2</a>
 </div>
 
 <div test-directive>hello world</div>

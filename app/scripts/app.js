@@ -3,7 +3,8 @@
 
   angular.module("testApp", [
     "ui.router",
-    "ui.bootstrap"
+    "ui.bootstrap",
+    "template/tooltip/boomer-popup.html"
   ]);
 
 })(angular);
