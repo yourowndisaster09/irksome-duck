@@ -91,7 +91,7 @@ module.exports = function (grunt) {
                 '^/a/b/c$ /others.html [L]',
 
                 '^/ubisoftie$ /index.html [L]',
-                '^/ubisoftie/x0x0$ /index.html [L]',
+                '^/ubisoftie/x0x0$ /index.html [L]'
               ]),
               connect.static('.tmp'),
               connect().use(
