@@ -85,7 +85,11 @@ module.exports = function (grunt) {
               modRewrite([
                 '^/$ /unrouted_home.html [L]',
                 '^/checkout$ /unrouted_checkout.html [L]',
-                '^/search|details$ /index.html [L]'
+                '^/search|details$ /index.html [L]',
+                '^/ubisoftie$ /index.html [L]',
+                '^/a$ /others.html [L]',
+                '^/a/b$ /others.html [L]',
+                '^/a/b/c$ /others.html [L]',
               ]),
               connect.static('.tmp'),
               connect().use(

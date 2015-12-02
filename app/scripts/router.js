@@ -71,7 +71,9 @@ angular.module("testApp")
             pageTitle: "Search page"
           },
           reloadOnSearch: true
-        })
+        });
+
+      $stateProvider
         .state("details", {
           url: "/details",
           pathRegex: /(^\/details)/,
@@ -87,6 +89,32 @@ angular.module("testApp")
           },
           data: {
             pageTitle: "Details page"
+          }
+        });
+
+      $stateProvider
+        .state("wildcard", {
+          url: "/:slug",
+          pathRegex: /(^\/.*$)/,
+          views: {
+            "content": {
+              templateUrl: "views/contents/wildcard.html",
+              controller: "ContentCtrl",
+              controllerAs: "wildCardPage"
+            }
+          }
+        });
+
+      $stateProvider
+        .state("wildcard-ext", {
+          url: "/:slug/:code",
+          pathRegex: /(^\/.*\/.*$)/,
+          views: {
+            "content": {
+              templateUrl: "views/contents/wildcard.html",
+              controller: "ContentCtrl",
+              controllerAs: "wildCardPage"
+            }
           }
         });
     }

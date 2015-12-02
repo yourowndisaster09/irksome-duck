@@ -13,9 +13,14 @@ angular.module("testApp")
     "$window",
     "$state",
     "RouteHelper",
-    function ($location, $window, $state, RouteHelper) {
+    "UrlHelper",
+    function ($location, $window, $state, RouteHelper, UrlHelper) {
       this.redirectTo = function(path, search, hash) {
         RouteHelper.redirectTo(path, search, hash);
+      };
+
+      this.getUrl = function(path, search, hash) {
+        return UrlHelper.getUrl(path, search, hash);
       };
 
       this.changeLocation = function(path, search, hash) {

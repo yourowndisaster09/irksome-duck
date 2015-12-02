@@ -1,6 +1,7 @@
 <!doctype html>
 <html ng-app="testApp">
   <head>
+    <base href="/"></base>
     <meta charset="utf-8">
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width">
@@ -10,7 +11,6 @@
 
     <!-- build:css(.) styles/vendor.css -->
     <!-- bower:css -->
-    <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.css" />
     <!-- endbower -->
     <!-- endbuild -->
 
@@ -26,10 +26,7 @@
   </head>
 
   <body ng-controller="MainCtrl as mainCtrl">
-    <h3>INSIDE ROUTED INDEX</h3>
-    <div ui-view="header"></div>
-    <div ui-view="content"></div>
-    <div ui-view="footer"></div>
+    <h3>OTHERS PAGE</h3>
 
 <table>
     <thead>
@@ -228,7 +225,6 @@
     <!-- build:js(.) scripts/vendor.js -->
     <!-- bower:js -->
     <script src="bower_components/jquery/dist/jquery.js"></script>
-    <script src="bower_components/bootstrap/dist/js/bootstrap.js"></script>
     <script src="bower_components/angular/angular.js"></script>
     <script src="bower_components/angular-ui-router/release/angular-ui-router.js"></script>
     <script src="bower_components/angular-bootstrap/ui-bootstrap-tpls.js"></script>
@@ -239,9 +235,7 @@
     <script src="scripts/jquery-migrate.js"></script>
     <script src="scripts/jquery-bbq.js"></script>
     <script src="scripts/app.js"></script>
-    <script src="scripts/router.js"></script>
     <script src="scripts/controllers/main.js"></script>
-    <script src="scripts/directives/tooltipTemplate.js"></script>
     <!-- endbuild -->
 
 </body>
