@@ -54,6 +54,25 @@ angular.module("testApp")
     "$urlRouterProvider",
     function($stateProvider, $urlRouterProvider) {
       $stateProvider
+        .state("home", {
+          url: "/",
+          pathRegex: /(^\/$)/,
+          views: {
+            "header": {
+              templateUrl: "views/headers/header1.html"
+            },
+            "content": {
+              templateUrl: "views/contents/home.html",
+              controller: "ContentCtrl",
+              controllerAs: "HomePage"
+            }
+          },
+          data: {
+            pageTitle: "Home page"
+          }
+        });
+
+      $stateProvider
         .state("search", {
           url: "/search?q&int&float&str&{date:any}",
           pathRegex: /(^\/search)/,

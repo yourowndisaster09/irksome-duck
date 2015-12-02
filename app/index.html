@@ -44,13 +44,58 @@
     <tbody>
         <tr>
             <td>
-
+            </td>
+            <td>
+                <a href="" ng-click="mainCtrl.changeLocation('/a')">/a</a>
+            </td>
+            <td>
+            </td>
+            <td>
+                <a ng-href="{{mainCtrl.getUrl('/a')}}">/a</a>
+            </td>
+            <td>
+                <a href="" ng-click="mainCtrl.redirectTo('/a')">/a</a>
+            </td>
+        </tr>
+        <tr>
+            <td>
+            </td>
+            <td>
+                <a href="" ng-click="mainCtrl.changeLocation('/a/b')">a/b</a>
+            </td>
+            <td>
+            </td>
+            <td>
+                <a ng-href="{{mainCtrl.getUrl('/a/b')}}">a/b</a>
+            </td>
+            <td>
+                <a href="" ng-click="mainCtrl.redirectTo('/a/b')">a/b</a>
+            </td>
+        </tr>
+        <tr>
+            <td>
+            </td>
+            <td>
+                <a href="" ng-click="mainCtrl.changeLocation('/a/b/c')">a/b/c</a>
+            </td>
+            <td>
+            </td>
+            <td>
+                <a ng-href="{{mainCtrl.getUrl('/a/b/c')}}">a/b/c</a>
+            </td>
+            <td>
+                <a href="" ng-click="mainCtrl.redirectTo('/a/b/c')">a/b/c</a>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <a href="" ng-click="mainCtrl.stateGo('home')">Home</a>
             </td>
             <td>
                 <a href="" ng-click="mainCtrl.changeLocation('/')">Home</a>
             </td>
             <td>
-
+                <a ui-sref="home">Home</a>
             </td>
             <td>
                 <a ng-href="{{mainCtrl.getUrl('/')}}">Home</a>
@@ -146,84 +191,40 @@
         </tr>
         <tr>
             <td>
+                <a href="" ng-click="mainCtrl.stateGo('wildcard', {slug: 'ubisoftie'})">ubisoftie</a>
             </td>
             <td>
-                <a href="" ng-click="mainCtrl.changeLocation('/checkout')">Checkout</a>
+                <a href="" ng-click="mainCtrl.changeLocation('/ubisoftie')">ubisoftie</a>
             </td>
             <td>
+                <a ui-sref="wildcard({slug: 'ubisoftie'})">ubisoftie</a>
             </td>
             <td>
-                <a ng-href="{{mainCtrl.getUrl('/checkout')}}">Checkout</a>
+                <a ng-href="{{mainCtrl.getUrl('/ubisoftie')}}">ubisoftie</a>
             </td>
             <td>
-                <a href="" ng-click="mainCtrl.redirectTo('/checkout')">Checkout</a>
-            </td>
-        </tr>
-        <tr>
-            <td>
-                <a href="" ng-click="mainCtrl.stateGo('wildcard', {slug: 'ubisoftie'})">Ubisoftie</a>
-            </td>
-            <td>
-                <a href="" ng-click="mainCtrl.changeLocation('/ubisoftie')">Ubisoftie</a>
-            </td>
-            <td>
-                <a ui-sref="wildcard({slug: 'ubisoftie'})">Ubisoftie</a>
-            </td>
-            <td>
-                <a ng-href="{{mainCtrl.getUrl('/ubisoftie')}}">Ubisoftie</a>
-            </td>
-            <td>
-                <a href="" ng-click="mainCtrl.redirectTo('/ubisoftie')">Ubisoftie</a>
+                <a href="" ng-click="mainCtrl.redirectTo('/ubisoftie')">ubisoftie</a>
             </td>
         </tr>
         <tr>
             <td>
+                <a href="" ng-click="mainCtrl.stateGo('wildcard-ext', {slug: 'ubisoftie', code: 'x0x0'})">ubisoftie x0x0</a>
             </td>
             <td>
-                <a href="" ng-click="mainCtrl.changeLocation('/a')">a</a>
+                <a href="" ng-click="mainCtrl.changeLocation('/ubisoftie/x0x0')">ubisoftie x0x0</a>
             </td>
             <td>
+                <a ui-sref="wildcard-ext({slug: 'ubisoftie'})">ubisoftie x0x0</a>
             </td>
             <td>
-                <a ng-href="{{mainCtrl.getUrl('/a')}}">a</a>
+                <a ng-href="{{mainCtrl.getUrl('/ubisoftie/x0x0')}}">ubisoftie x0x0</a>
             </td>
             <td>
-                <a href="" ng-click="mainCtrl.redirectTo('/a')">a</a>
-            </td>
-        </tr>
-        <tr>
-            <td>
-            </td>
-            <td>
-                <a href="" ng-click="mainCtrl.changeLocation('/a/b')">a/b</a>
-            </td>
-            <td>
-            </td>
-            <td>
-                <a ng-href="{{mainCtrl.getUrl('/a/b')}}">a/b</a>
-            </td>
-            <td>
-                <a href="" ng-click="mainCtrl.redirectTo('/a/b')">a/b</a>
-            </td>
-        </tr>
-        <tr>
-            <td>
-            </td>
-            <td>
-                <a href="" ng-click="mainCtrl.changeLocation('/a/b/c')">a/b/c</a>
-            </td>
-            <td>
-            </td>
-            <td>
-                <a ng-href="{{mainCtrl.getUrl('/a/b/c')}}">a/b/c</a>
-            </td>
-            <td>
-                <a href="" ng-click="mainCtrl.redirectTo('/a/b/c')">a/b/c</a>
+                <a href="" ng-click="mainCtrl.redirectTo('/ubisoftie/x0x0')">ubisoftie x0x0</a>
             </td>
         </tr>
     </tbody>
 </table>
-
 
     <!-- build:js(.) scripts/vendor.js -->
     <!-- bower:js -->
