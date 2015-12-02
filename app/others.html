@@ -41,47 +41,53 @@
     <tbody>
         <tr>
             <td>
+                <a href="" ng-click="mainCtrl.stateGo('a')">a</a>
             </td>
             <td>
-                <a href="" ng-click="mainCtrl.changeLocation('/a')">/a</a>
+                <a href="" ng-click="mainCtrl.changeLocation('/a')">a</a>
             </td>
             <td>
+                <a ui-sref="a">a</a>
             </td>
             <td>
-                <a ng-href="{{mainCtrl.getUrl('/a')}}">/a</a>
+                <a ng-href="{{mainCtrl.getUrl('/a')}}">a</a>
             </td>
             <td>
-                <a href="" ng-click="mainCtrl.redirectTo('/a')">/a</a>
-            </td>
-        </tr>
-        <tr>
-            <td>
-            </td>
-            <td>
-                <a href="" ng-click="mainCtrl.changeLocation('/a/b')">a/b</a>
-            </td>
-            <td>
-            </td>
-            <td>
-                <a ng-href="{{mainCtrl.getUrl('/a/b')}}">a/b</a>
-            </td>
-            <td>
-                <a href="" ng-click="mainCtrl.redirectTo('/a/b')">a/b</a>
+                <a href="" ng-click="mainCtrl.redirectTo('/a')">a</a>
             </td>
         </tr>
         <tr>
             <td>
+                <a href="" ng-click="mainCtrl.stateGo('ab')">ab</a>
             </td>
             <td>
-                <a href="" ng-click="mainCtrl.changeLocation('/a/b/c')">a/b/c</a>
+                <a href="" ng-click="mainCtrl.changeLocation('/a/b')">ab</a>
             </td>
             <td>
+                <a ui-sref="a">ab</a>
             </td>
             <td>
-                <a ng-href="{{mainCtrl.getUrl('/a/b/c')}}">a/b/c</a>
+                <a ng-href="{{mainCtrl.getUrl('/a/b')}}">ab</a>
             </td>
             <td>
-                <a href="" ng-click="mainCtrl.redirectTo('/a/b/c')">a/b/c</a>
+                <a href="" ng-click="mainCtrl.redirectTo('/a/b')">ab</a>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <a href="" ng-click="mainCtrl.stateGo('abc')">abc</a>
+            </td>
+            <td>
+                <a href="" ng-click="mainCtrl.changeLocation('/a/b/c')">abc</a>
+            </td>
+            <td>
+                <a ui-sref="abc">abc</a>
+            </td>
+            <td>
+                <a ng-href="{{mainCtrl.getUrl('/a/b/c')}}">abc</a>
+            </td>
+            <td>
+                <a href="" ng-click="mainCtrl.redirectTo('/a/b/c')">abc</a>
             </td>
         </tr>
         <tr>

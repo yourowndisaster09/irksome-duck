@@ -17,13 +17,14 @@ angular.module("testApp")
   });
 
   angular.module("testApp").provider("UrlPathWhitelist", function() {
-    var whitelist = {};
+    var whitelist = [];
 
-    this.add = function(name, regex) {
-      whitelist[name] = regex;
+    this.add = function(mapping) {
+      whitelist.push(mapping);
     };
 
     this.$get = function() {
+      console.info(whitelist);
       return whitelist;
     };
   });
@@ -38,10 +39,16 @@ angular.module("testApp")
         $stateProvider.state = function() {
           var definition = arguments[1];
 
-          if (!definition.abstract && definition.url && definition.pathRegex) {
+          if (!definition.abstract && definition.url) {
             var name = arguments[0];
-            var pathRegex = definition.pathRegex;
-            UrlPathWhitelistProvider.add(name, pathRegex);
+            var url = definition.url;
+            var unrouted = definition.unrouted === true;
+
+            UrlPathWhitelistProvider.add({
+              name: name,
+              url: url,
+              unrouted: unrouted
+            });
           }
 
           return stateFn.apply(this, arguments);
@@ -52,11 +59,22 @@ angular.module("testApp")
   angular.module("testApp").config([
     "$stateProvider",
     "$urlRouterProvider",
-    function($stateProvider, $urlRouterProvider) {
+    function($stateProvider) {
+      $stateProvider
+        .state("a", {
+          url: "/a",
+          unrouted: true
+        });
+
+      $stateProvider
+        .state("ab", {
+          url: "/a/b",
+          unrouted: true
+        });
+
       $stateProvider
         .state("home", {
           url: "/",
-          pathRegex: /(^\/$)/,
           views: {
             "header": {
               templateUrl: "views/headers/header1.html"
@@ -75,7 +93,6 @@ angular.module("testApp")
       $stateProvider
         .state("search", {
           url: "/search?q&int&float&str&{date:any}",
-          pathRegex: /(^\/search)/,
           views: {
             "header": {
               templateUrl: "views/headers/header2.html"
@@ -95,7 +112,6 @@ angular.module("testApp")
       $stateProvider
         .state("details", {
           url: "/details",
-          pathRegex: /(^\/details)/,
           views: {
             "content": {
               templateUrl: "views/contents/details.html",
@@ -114,7 +130,6 @@ angular.module("testApp")
       $stateProvider
         .state("wildcard-ext", {
           url: "/:slug/:code",
-          pathRegex: /(^\/[^\/]*\/[^\/]*$)/,
           views: {
             "content": {
               templateUrl: "views/contents/wildcard.html",
@@ -127,7 +142,6 @@ angular.module("testApp")
       $stateProvider
         .state("wildcard", {
           url: "/:slug",
-          pathRegex: /(^\/[^\/]*$)/,
           views: {
             "content": {
               templateUrl: "views/contents/wildcard.html",
@@ -181,7 +195,8 @@ angular.module("testApp")
     "$urlRouter",
     "$state",
     "$sniffer",
-    function($window, $location, $rootScope, UrlPathWhitelist, RouteHelper, $urlRouter, $state, $sniffer) {
+    "$urlMatcherFactory",
+    function($window, $location, $rootScope, UrlPathWhitelist, RouteHelper, $urlRouter, $state, $sniffer, $urlMatcherFactory) {
       var shouldReload = false;
       var firstLocationChange = true;
 
@@ -210,10 +225,12 @@ angular.module("testApp")
         // Test current location path with the mappings in the whitelist
         var path = $location.path();
         var stateName = null;
-        for (var name in UrlPathWhitelist) {
-          var regex = UrlPathWhitelist[name];
-          if (regex.test(path)) {
-            stateName = name;
+        var mapping;
+        for (var i = 0; i < UrlPathWhitelist.length; i++) {
+          mapping = UrlPathWhitelist[i];
+          var matcher = $urlMatcherFactory.compile(mapping.url);
+          if (matcher.regexp.test(path)) {
+            stateName = mapping.unrouted ? null : mapping.name;
             break;
           }
         }
