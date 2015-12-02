@@ -112,9 +112,9 @@ angular.module("testApp")
         });
 
       $stateProvider
-        .state("wildcard", {
-          url: "/:slug",
-          pathRegex: /(^\/.*$)/,
+        .state("wildcard-ext", {
+          url: "/:slug/:code",
+          pathRegex: /(^\/[^\/]*\/[^\/]*$)/,
           views: {
             "content": {
               templateUrl: "views/contents/wildcard.html",
@@ -125,9 +125,9 @@ angular.module("testApp")
         });
 
       $stateProvider
-        .state("wildcard-ext", {
-          url: "/:slug/:code",
-          pathRegex: /(^\/.*\/.*$)/,
+        .state("wildcard", {
+          url: "/:slug",
+          pathRegex: /(^\/[^\/]*$)/,
           views: {
             "content": {
               templateUrl: "views/contents/wildcard.html",
@@ -136,6 +136,7 @@ angular.module("testApp")
             }
           }
         });
+
     }
   ]);
 
